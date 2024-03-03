@@ -7,10 +7,8 @@ import { useEffect } from "react";
 
 import MainMenu from "./mainMenu";
 import PauseMenu from "./pauseMenu";
-import Instructions from "./instructions";
 import Hud from "./hud";
 import GameOver from "./gameOver";
-import Leaderboard from "./leaderboard";
 import Debug from "./debug";
 
 export default function App() {
@@ -29,10 +27,8 @@ export default function App() {
         <Route path="/" element={<view />} />
         <Route path="/mainMenu" element={<MainMenu />} />
         <Route path="/pauseMenu" element={<PauseMenu />} />
-        <Route path="/instructions" element={<Instructions />} />
         <Route path="/hud" element={<Hud />} />
         <Route path="/gameOver" element={<GameOver />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
       <Debug />
     </>

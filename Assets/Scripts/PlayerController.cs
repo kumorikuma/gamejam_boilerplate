@@ -4,8 +4,7 @@ using UnityEngine;
 /*Simple player movement controller, based on character controller component,
 with footstep system based on check the current texture of the component*/
 public class PlayerController : MonoBehaviour {
-    [NonNullField]
-    public Animator Animator;
+    [NonNullField] public Animator Animator;
 
     //Variables for footstep system list
     [System.Serializable]
@@ -15,25 +14,19 @@ public class PlayerController : MonoBehaviour {
         public AudioClip[] footstepSounds;
     }
 
-    [Header("Movement")]
-    [Tooltip("Walking controller speed")]
-    [SerializeField]
+    [Header("Movement")] [Tooltip("Walking controller speed")] [SerializeField]
     private float WalkSpeed = 1.0f;
 
-    [Tooltip("Normal controller speed")]
-    [SerializeField]
+    [Tooltip("Normal controller speed")] [SerializeField]
     private float RunSpeed = 3.0f;
 
-    [Tooltip("Turning controller speed")]
-    [SerializeField]
+    [Tooltip("Turning controller speed")] [SerializeField]
     private float TurnSpeed = 360.0f;
 
-    [Tooltip("Force of the jump with which the controller rushes upwards")]
-    [SerializeField]
+    [Tooltip("Force of the jump with which the controller rushes upwards")] [SerializeField]
     private float JumpForce = 1.0f;
 
-    [Tooltip("Gravity, pushing down controller when it jumping")]
-    [SerializeField]
+    [Tooltip("Gravity, pushing down controller when it jumping")] [SerializeField]
     private float gravity = -9.81f;
 
     public GameObject PlayerModel;
@@ -48,8 +41,6 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         _velocity.y = -2f;
     }
 
@@ -76,6 +67,7 @@ public class PlayerController : MonoBehaviour {
         if (inputJumpOnNextFrame && characterController.isGrounded) {
             _velocity.y = Mathf.Sqrt(JumpForce * -2f * gravity);
         }
+
         inputJumpOnNextFrame = false;
 
         // Using KBM controls, there's a specific button to walk.
@@ -92,11 +84,13 @@ public class PlayerController : MonoBehaviour {
         float forwardSpeed = isMoving ? moveSpeed : 0;
         if (isMoving) {
             // Face the character in the direction of movement
-            targetRotation = Quaternion.Euler(0, Mathf.Atan2(worldMoveDirection.x, worldMoveDirection.z) * Mathf.Rad2Deg, 0);
+            targetRotation = Quaternion.Euler(0,
+                Mathf.Atan2(worldMoveDirection.x, worldMoveDirection.z) * Mathf.Rad2Deg, 0);
         }
 
         // Turn the player incrementally towards the direction of movement
-        PlayerModel.transform.rotation = Quaternion.RotateTowards(PlayerModel.transform.rotation, targetRotation, TurnSpeed * Time.deltaTime);
+        PlayerModel.transform.rotation = Quaternion.RotateTowards(PlayerModel.transform.rotation, targetRotation,
+            TurnSpeed * Time.deltaTime);
 
         // CharacterController.Move should only be called once, see:
         // https://forum.unity.com/threads/charactercontroller-isgrounded-unreliable-or-bad-code.373492/

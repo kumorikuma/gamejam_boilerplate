@@ -1,43 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
 using ReactUnity;
 using ReactUnity.Reactive;
 using UnityEngine;
 
 public class ReactUnityBridge : MonoBehaviour {
-    [NonNullField]
-    public UIRouter Router;
+    public ReactiveValue<string> route = new();
+    public ReactiveValue<bool> debugModeEnabled = new();
+    public ReactiveValue<string> debugGameState = new();
+    public ReactiveValue<Leaderboards.LeaderboardScores> leaderboardScores = new();
 
-    public ReactiveValue<string> route = new ReactiveValue<string>();
-
-    // Sample usage
-    [NonNullField]
-    public DialogueSystem DialogueSystem;
-    public ReactiveValue<string> dialogueSpeaker = new ReactiveValue<string>();
-    public ReactiveValue<string> dialogueText = new ReactiveValue<string>();
-    // TODO: This requires less code, but not sure how to type it on JS side.
-    public ReactiveValue<DialogueData> dialogueData = new ReactiveValue<DialogueData>();
+    private ReactRendererBase reactRenderer;
 
     void Awake() {
-        ReactRendererBase reactRenderer = GetComponentInChildren<ReactUnity.UGUI.ReactRendererUGUI>();
-        Router.OnRouteUpdate += OnRouteUpdate;
+        reactRenderer = GetComponentInChildren<ReactUnity.UGUI.ReactRendererUGUI>();
+
+        // Routing
         reactRenderer.Globals["route"] = route;
 
-        // Sample usage
-        DialogueSystem.OnDialogueUpdate += OnDialogueUpdate;
-        reactRenderer.Globals["dialogueSpeaker"] = dialogueSpeaker;
-        reactRenderer.Globals["dialogueText"] = dialogueText;
-        reactRenderer.Globals["dialogueData"] = dialogueData;
+        reactRenderer.Globals["leaderboardScores"] = leaderboardScores;
+
+        // Debug values
+        reactRenderer.Globals["debugGameState"] = debugGameState;
+        reactRenderer.Globals["debugModeEnabled"] = debugModeEnabled;
+
+        // Enable Debug Mode when in Unity Editor
+        debugModeEnabled.Value = false;
+#if UNITY_EDITOR
+        debugModeEnabled.Value = true;
+#endif
+
+        // Singletons become available after Awake. ScriptExecutionOrder should make sure this is executed last.
+        UIRouter.Instance.OnRouteUpdate += OnRouteUpdate;
+        GameLifecycleManager.Instance.OnGameStateUpdated += OnGameStateUpdated;
+        if (Leaderboards.Instance != null) {
+            Leaderboards.Instance.OnLeaderboardScoresUpdated += LeaderboardsOnOnLeaderboardScoresUpdated;
+            // To enable leaderboards, need to connect to a Unity Project and add the Leaderboards singleton to the game.
+        }
+
+        // Game System References   
+        reactRenderer.Globals["gameLifecycleManager"] = GameLifecycleManager.Instance;
+    }
+
+    private void LeaderboardsOnOnLeaderboardScoresUpdated(object sender, Leaderboards.LeaderboardScores data) {
+        leaderboardScores.Value = data;
     }
 
     void OnRouteUpdate(object sender, string data) {
         route.Value = data;
     }
 
-    // Sample usage
-    void OnDialogueUpdate(object sender, DialogueData data) {
-        dialogueSpeaker.Value = data.speaker;
-        dialogueText.Value = data.text;
-        // dialogueData.Value = data;
+    void OnGameStateUpdated(object sender, GameLifecycleManager.GameState data) {
+        debugGameState.Value = data.ToString();
     }
 }

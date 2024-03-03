@@ -1,4 +1,4 @@
-import { useGlobals, useReactiveValue } from "@reactunity/renderer";
+import { useGlobals } from "@reactunity/renderer";
 
 import Button from "./button";
 import "./index.scss";
@@ -10,16 +10,11 @@ export default function MainMenu(): React.ReactNode {
   return (
     <view className="main-menu">
       <view className="content">
+        <view className="title">Game Template</view>
         <Button
           text="Start Game"
           onClick={() => {
-            gameLifecycleManager.StartGame(0, true);
-          }}
-        />
-        <Button
-          text="Leaderboard"
-          onClick={() => {
-            gameLifecycleManager.ToLeaderboard();
+            gameLifecycleManager.StartGame();
           }}
         />
       </view>

@@ -1,4 +1,4 @@
-import { useGlobals, useReactiveValue } from "@reactunity/renderer";
+import { useGlobals } from "@reactunity/renderer";
 
 import Button from "./button";
 import "./index.scss";

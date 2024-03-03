@@ -1,4 +1,3 @@
-
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,13 +9,11 @@ using Unity.Services.Leaderboards.Exceptions;
 
 // Handles both keeping track of highest local score (for offline situations),
 // and also using online Unity leaderboards.
-public class Leaderboards : Singleton<Leaderboards>
-{
+public class Leaderboards : Singleton<Leaderboards> {
     private const string LEADERBOARD_ID = "Global";
     public const string PREFS_BEST_SCORE = "Best_Score";
 
-    public struct LeaderboardScores
-    {
+    public struct LeaderboardScores {
         public int LatestScore;
         public int LatestRanking;
         public int BestScore;
@@ -24,12 +21,11 @@ public class Leaderboards : Singleton<Leaderboards>
         public int GlobalBestScore;
         public int NumberScores;
     }
-    
+
     public event EventHandler<LeaderboardScores> OnLeaderboardScoresUpdated;
     private LeaderboardScores _scores = new();
 
-    async void Start()
-    {
+    async void Start() {
         // Initialize UGS
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () => {
@@ -40,14 +36,16 @@ public class Leaderboards : Singleton<Leaderboards>
             Debug.LogError("Sign in failed!");
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        
+
+#pragma warning disable CS4014
         LoadLeaderboardAsync();
+#pragma warning restore CS4014
     }
-    
+
     private int LoadCachedBestScore() {
         return PlayerPrefs.GetInt(PREFS_BEST_SCORE, 0);
     }
-    
+
     public async Task LoadLeaderboardAsync() {
         // Pull data from local cache as a fallback first. 
         _scores.BestScore = LoadCachedBestScore();
@@ -56,8 +54,7 @@ public class Leaderboards : Singleton<Leaderboards>
         if (!AuthenticationService.Instance.IsSignedIn) {
             try {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            } catch (Exception)
-            {
+            } catch (Exception) {
                 Debug.LogError("[Leaderboards::LoadLeaderboardAsync] Anon sign-in failed!");
             }
         }
@@ -69,9 +66,8 @@ public class Leaderboards : Singleton<Leaderboards>
             await Task.WhenAll(loadGlobalScoreTask, loadPlayerScoreTask);
         } catch (Exception) { }
     }
-    
-    public async Task SubmitScoreToLeaderboard(int score)
-    {
+
+    public async Task SubmitScoreToLeaderboard(int score) {
         Debug.Log("[Leaderboards::SubmitScoreToLeaderboard] Score " + score);
         // Pull data from local cache as a fallback first.
         // This will get us:
@@ -83,15 +79,14 @@ public class Leaderboards : Singleton<Leaderboards>
 
         // If the user is not signed in- try signing in first.
         if (!AuthenticationService.Instance.IsSignedIn) {
-            try
-            {
+            try {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 Debug.LogError("[Leaderboards::SubmitScoreToLeaderboard] Anon sign-in failed!");
             }
-            Debug.Log("[Leaderboards::SubmitScoreToLeaderboard] Signed in! ID: " + AuthenticationService.Instance.PlayerId);
+
+            Debug.Log("[Leaderboards::SubmitScoreToLeaderboard] Signed in! ID: " +
+                      AuthenticationService.Instance.PlayerId);
         }
 
         // Update latest score. This gets us:
@@ -99,16 +94,15 @@ public class Leaderboards : Singleton<Leaderboards>
         // - [unset] Latest Rank: Sets to 0 because we don't know what the rank is w/o internet connection.
         _scores.LatestScore = score;
         _scores.LatestRanking = 0;
-        
+
         // Update best score based on the latest score.
         // This doesn't depend on network so if the rest of the leaderboard stuff fails at least we'll have the best scores updated.
         // It could still be incorrect because there might be a better score on the leaderboard.
         // - [updated] Best Score
-        if (_scores.LatestScore > _scores.BestScore)
-        {
+        if (_scores.LatestScore > _scores.BestScore) {
             _scores.BestScore = _scores.LatestScore;
         }
-        
+
         // Update UI here as any of the future await calls to Unity Game Services (UGS) may never finish if no internet.
         OnLeaderboardScoresUpdated?.Invoke(this, _scores);
 
@@ -134,43 +128,37 @@ public class Leaderboards : Singleton<Leaderboards>
         } catch (Exception) {
             // This happens when the user doesn't have a score yet.
         }
-        
+
         // In order to get a ranking for our latest score, we need to submit our latest score to the server.
         // - [Done] Latest rank
-        try
-        {
+        try {
             LeaderboardEntry scoreResponse =
                 await LeaderboardsService.Instance.AddPlayerScoreAsync(LEADERBOARD_ID,
                     _scores.LatestScore);
             _scores.LatestRanking = scoreResponse.Rank + 1;
-        }
-        catch (Exception)
-        {
+        } catch (Exception) {
             Debug.LogError("[Leaderboards::SubmitScoreToLeaderboard] Error submitting latest score!");
         }
-        
+
         // Now that we know our best score, and we've gotten our latest rank, we can resubmit to the server.
         // This will let the server know our best score so far, and we'll also get an up to date best rank.
         // - [Done] Best rank
-        try
-        {
+        try {
             LeaderboardEntry scoreResponse =
                 await LeaderboardsService.Instance.AddPlayerScoreAsync(LEADERBOARD_ID,
                     _scores.BestScore);
             _scores.BestRanking = scoreResponse.Rank + 1;
-        }
-        catch (Exception)
-        {
+        } catch (Exception) {
             Debug.LogError("[Leaderboards::SubmitScoreToLeaderboard] Error submitting best score!");
         }
-        
+
         // At this point we'll update the UI and cache the data.
         OnLeaderboardScoresUpdated?.Invoke(this, _scores);
         PlayerPrefs.SetInt(PREFS_BEST_SCORE, _scores.BestScore);
         PlayerPrefs.Save();
-        
+
         Debug.Log("[Leaderboards::SubmitScoreToLeaderboard] Finished submitting!");
-        
+
         // Finally, unrelated we can get the global score. This updates the UI by itself.
         // - [Done] Global score
         await LoadGlobalScoreAsync();
@@ -190,7 +178,7 @@ public class Leaderboards : Singleton<Leaderboards>
 
         OnLeaderboardScoresUpdated?.Invoke(this, _scores);
     }
-    
+
     private async Task LoadPlayerScoreAsync() {
         int networkScore = 0;
         int networkRank = 0;
@@ -206,7 +194,7 @@ public class Leaderboards : Singleton<Leaderboards>
             // This can happen if there's either no internet connection,
             // or the player doesn't have a network score yet.
         }
-        
+
         int cachedBestScore = LoadCachedBestScore();
         if (networkScore >= cachedBestScore) {
             // Network score was better, update the cached score.

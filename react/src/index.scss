@@ -15,7 +15,7 @@
 /* ===== Common ===== */
 
 * {
-  font-family: "Rubik Bubbles";
+  font-family: sans-serif;
 }
 
 .padding-md {
@@ -60,16 +60,16 @@
   padding-bottom: 24px;
   padding-left: 32px;
   padding-right: 32px;
-  background: #a28dbd;
+  background-color: transparent;
   border-radius: 48px;
 
   &:active {
-    background-color: #e4ccd6;
+    background-color: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
   }
 
   &:hover {
-    background-color: #e4ccd6;
+    background-color: rgba(255, 255, 255, 0.1);
     transform: scale(1.1);
   }
 }
@@ -121,12 +121,11 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: url("resource:DivergentDreams.png");
-  background-size: cover;
-  background-position: center;
+  // background: url("resource:DivergentDreams.png");
+  // background-size: cover;
+  // background-position: center;
 
   .content {
-    margin-top: 470px;
     @include flex-layout(column);
     align-items: center;
   }
@@ -154,9 +153,14 @@
 .pause-menu {
   height: 100%;
 
+  .text {
+    font-size: 36px;
+  }
+
   .container {
     padding-left: 24px;
     padding-right: 24px;
+    padding-bottom: 12px;
     color: white;
 
     .button {
@@ -175,7 +179,6 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
     background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0.5));
   }
   
@@ -223,46 +226,5 @@
     font-size: 48px;
     width: 340px;
     align-self: center;
-  }
-}
-
-.leaderboard {
-  @include flex-layout(column);
-  justify-content: center;
-  align-items: center;
-  background: url("resource:DivergentDreams_altered.png");
-  background-size: cover;
-  background-position: center;
-  height: 100%;
-
-  .title {
-    margin-top: -200px;
-    margin-bottom: 100px;
-    color: white;
-    font-size: 82px;
-    text-align: center;
-  }
-
-  .content {
-    @include flex-layout(column);
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 100px;
-
-
-  }
-
-  // Workaround for lack of "gap" support
-  .content > *:not(:first-child) {
-    margin-top: 24px;
-  }
-
-  .score {
-    @include flex-layout(row);
-    font-size: 32px;
-  }
-
-  .button {
-    font-size: 32px;
   }
 }

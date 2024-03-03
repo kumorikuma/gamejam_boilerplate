@@ -19,11 +19,11 @@ export default function Debug(): React.ReactNode {
             <view className="text">Debug</view>
             <view className="text">{`UI Route: ${route}`}</view>
             <view className="text">{`Game State: ${gameState}`}</view>
-            {(gameState == "GameStarted" || gameState == "GamePaused") && (
+            {gameState === "GamePaused" && (
               <Button
-                text="End Level"
+                text="End Game"
                 onClick={() => {
-                  gameLifecycleManager.EndLevel();
+                  gameLifecycleManager.EndGame();
                 }}
               />
             )}
