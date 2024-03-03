@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "Library/PackageCache"
+		},
+		{
+			"path": "Packages"
+		}
+	],
+	"settings": {
+		"[typescriptreact]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+		},
+		"editor.formatOnSaveMode": "modificationsIfAvailable",
+	}
+}
