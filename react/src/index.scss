@@ -1,77 +1,268 @@
-.black-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 250px;
-  // background-color: red;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0.5));
+/* ===== Fonts ===== */
+
+@font-face {
+  font-family: "Rubik Bubbles";
+  src: resource("Fonts/RubikBubbles");
+}
+
+/* ===== Mixins ===== */
+
+@mixin flex-layout($direction) {
   display: flex;
-  flex-direction: row;
-  // align-items: center;
-  // justify-content: center;
+  flex-direction: $direction;
+}
+
+/* ===== Common ===== */
+
+* {
+  font-family: "Rubik Bubbles";
+}
+
+.padding-md {
+  padding: 12px;
+}
+
+.padding-lg {
   padding: 24px;
-  padding-left: 20%;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
-  font-family: sans-serif;
-}
-
-.title {
-  padding-left: 48px;
-  color: white;
-  font-size: 24px;
-}
-
-.gradient-rule {
-  height: 1px;
-  // width: 100%;
-  width: 400px;
-  // align-self: stretch;
-  background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-  margin: 16px 0;
-}
-
-.message {
-  padding: 24px;
-  padding-left: 64px;
-  color: white;
-  font-size: 18px;
 }
 
 .spacer {
   flex-grow: 1;
 }
 
-.main-menu {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.flex-column {
+  @include flex-layout(column);
+}
 
-  .rule {
-    height: 1px;
-    align-self: stretch;
-    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-    margin: 0px 0;
+.flex-row {
+  @include flex-layout(row);
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* ===== Components ===== */
+
+.button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+
+  font-size: 64px;
+  color: white;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 32px;
+  padding-right: 32px;
+  background: #a28dbd;
+  border-radius: 48px;
+
+  &:active {
+    background-color: #e4ccd6;
+    transform: scale(1.1);
   }
 
-  .top-bar {
-    height: 100px;
-    background-color: rgba(0, 0, 0, 0.8);
+  &:hover {
+    background-color: #e4ccd6;
+    transform: scale(1.1);
+  }
+}
+
+.score {
+    color: white;
+    font-size: 24px;
+
+    &.text {
+        padding-right: 20px;
+    }
+}
+
+/* ===== Debug UI ===== */
+.debug-ui {
+  @include flex-layout(column);
+  padding: 6px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .text {
+    color: white;
+    font-size: 24px;
+  }
+
+  .button {
+    font-size: 16px;
+    border-radius: 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    height: 40px;
+    width: 120px;
+    padding: 4px;
+  }
+}
+
+/* ===== Routes ===== */
+
+.main-menu {
+  @include flex-layout(column);
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: url("resource:DivergentDreams.png");
+  background-size: cover;
+  background-position: center;
+
+  .content {
+    margin-top: 470px;
+    @include flex-layout(column);
+    align-items: center;
+  }
+
+  // Workaround for lack of "gap" support
+  .content > *:not(:first-child) {
+    margin-top: 48px;
+  }
+
+  .title {
+    margin-top: -128px;
+    margin-bottom: 128px;
+    text-align: center;
+    color: white;
+    font-size: 64px;
+  }
+}
+
+.hud {
+  .score {
+    font-size: 36px;
+  }
+}
+
+.pause-menu {
+  height: 100%;
+
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+    color: white;
+
+    .button {
+      font-size: 32px;
+    }
+  }
+
+  // Workaround for lack of "gap" support
+  .container > *:not(:first-child) {
+    margin-top: 24px;
+  }
+
+  .black-bar {
+    @include flex-layout(column);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0.5));
+  }
+  
+  .gradient-rule {
+    height: 1px;
+    width: 100%;
+    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  }
+}
+
+.gameover {
+  @include flex-layout(column);
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .title {
+    margin-top: -128px;
+    margin-bottom: 128px;
+    text-align: center;
+    color: white;
+    font-size: 82px;
+  }
+
+  .score {
+    font-size: 40px;
+    text-align: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .latest {
+    margin-top: -64px;
+    font-size: 64px;
+  }
+  
+  .ranking {
+    margin-bottom: 64px;
+    font-size: 64px;
+  }
+
+  .mainMenuButton {
+    margin-top: 64px;
+    margin-bottom: -64px;
+    font-size: 48px;
+    width: 340px;
+    align-self: center;
+  }
+}
+
+.leaderboard {
+  @include flex-layout(column);
+  justify-content: center;
+  align-items: center;
+  background: url("resource:DivergentDreams_altered.png");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+
+  .title {
+    margin-top: -200px;
+    margin-bottom: 100px;
+    color: white;
+    font-size: 82px;
+    text-align: center;
   }
 
   .content {
-    flex-grow: 1;
+    @include flex-layout(column);
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+
+
   }
 
-  .bottom-bar {
-    height: 75px;
-    background-color: rgba(0, 0, 0, 0.8);
+  // Workaround for lack of "gap" support
+  .content > *:not(:first-child) {
+    margin-top: 24px;
+  }
+
+  .score {
+    @include flex-layout(row);
+    font-size: 32px;
+  }
+
+  .button {
+    font-size: 32px;
   }
 }
