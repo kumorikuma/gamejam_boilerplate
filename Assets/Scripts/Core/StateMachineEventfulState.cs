@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
+#endif
 
 public class StateMachineEventfulState : StateMachineBehaviour {
-#if UNITY_EDITOR
     // The condition upon which the animation parameter is updated.
     public enum Condition {
         StateEntered,
         StateExited
     }
-
-    // Populated at editor time.
-    [HideInInspector] public Dictionary<string, AnimatorControllerParameter> AnimatorParameters = new();
 
     [Serializable]
     public class AnimatorParameterEntry {
@@ -26,17 +25,21 @@ public class StateMachineEventfulState : StateMachineBehaviour {
 
         // This method will be called by Odin to get the dropdown values
         private IEnumerable<string> ParameterNames() {
+#if UNITY_EDITOR
             if (eventfulState != null && eventfulState.AnimatorParameters != null) {
                 return eventfulState.AnimatorParameters.Keys;
             }
+#endif
 
             return new List<string>();
         }
 
         // This method is called whenever SelectedParameterName changes.
         private void OnParameterSelected() {
+#if UNITY_EDITOR
             AnimatorControllerParameter param = eventfulState.AnimatorParameters[Parameter];
             Type = param.type;
+#endif
         }
 
         public Condition condition;
@@ -52,6 +55,10 @@ public class StateMachineEventfulState : StateMachineBehaviour {
         [ShowIf("Type", AnimatorControllerParameterType.Int)]
         public int IntValue;
     }
+    
+#if UNITY_EDITOR
+    // Populated at editor time.
+    [HideInInspector] public Dictionary<string, AnimatorControllerParameter> AnimatorParameters = new();
 
     private void OnValidate() {
         // See: https://forum.unity.com/threads/editor-not-runtime-how-to-get-animatorcontroller-reference-within-statemachinebehaviour.1371780/
