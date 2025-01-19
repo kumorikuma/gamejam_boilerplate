@@ -12,7 +12,6 @@ namespace Kumorikuma.Gameplay {
 
         void Start() {
             _GameDirector.OnActorSpawned?.Invoke(this);
-            Debug.Log("MOOO");
         }
 
         private void OnDestroy() {
