@@ -57,14 +57,14 @@ dotnet_style_prefer_conditional_expression_over_return = true:silent
 # Naming Conventions          #
 ###############################
 # Style Definitions
-dotnet_naming_style.pascal_case_style.capitalization             = pascal_case
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 # Use PascalCase for constant fields
 dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = suggestion
-dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols  = constant_fields
-dotnet_naming_rule.constant_fields_should_be_pascal_case.style    = pascal_case_style
-dotnet_naming_symbols.constant_fields.applicable_kinds            = field
-dotnet_naming_symbols.constant_fields.applicable_accessibilities  = *
-dotnet_naming_symbols.constant_fields.required_modifiers          = const
+dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols = constant_fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style = pascal_case_style
+dotnet_naming_symbols.constant_fields.applicable_kinds = field
+dotnet_naming_symbols.constant_fields.applicable_accessibilities = *
+dotnet_naming_symbols.constant_fields.required_modifiers = const
 ###############################
 # C# Coding Conventions       #
 ###############################
@@ -87,7 +87,7 @@ csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 csharp_style_throw_expression = true:suggestion
 csharp_style_conditional_delegate_call = true:suggestion
 # Modifier preferences
-csharp_preferred_modifier_order = public,private,protected,internal,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion
+csharp_preferred_modifier_order = public, private, protected, internal, file, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, required, volatile, async:suggestion
 # Expression-level preferences
 csharp_prefer_braces = true:silent
 csharp_style_deconstructed_variable_declaration = true:suggestion
@@ -97,6 +97,7 @@ csharp_style_inlined_variable_declaration = true:suggestion
 ###############################
 # C# Formatting Rules         #
 ###############################
+max_line_length = 120
 # New line preferences
 csharp_new_line_before_open_brace = none
 csharp_new_line_before_else = false
@@ -124,9 +125,93 @@ csharp_space_between_method_call_empty_parameter_list_parentheses = false
 # Wrapping preferences
 csharp_preserve_single_line_statements = true
 csharp_preserve_single_line_blocks = true
+resharper_csharp_keep_user_linebreaks = false
 ###############################
 # VB Coding Conventions       #
 ###############################
 [*.vb]
 # Modifier preferences
-visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async:suggestion
+visual_basic_preferred_modifier_order = Partial, Default, Private, Protected, Public, Friend, NotOverridable, Overridable, MustOverride, Overloads, Overrides, MustInherit, NotInheritable, Static, Shared, Shadows, ReadOnly, WriteOnly, Dim, Const, WithEvents, Widening, Narrowing, Custom, Async:suggestion
+
+###############################
+# Pahdo Style                 #
+# (Some rules specified above #
+# are overridden here)        #
+###############################
+
+[*.cs]
+# Define naming styles
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+dotnet_naming_style.pascal_case_underscore_style.capitalization = pascal_case
+dotnet_naming_style.pascal_case_underscore_style.required_prefix = _
+dotnet_naming_style.all_upper_case_style.capitalization = all_upper
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
+dotnet_naming_style.camel_case_underscore_style.required_prefix = _
+dotnet_naming_style.interface_prefix_i_style.capitalization = pascal_case
+dotnet_naming_style.interface_prefix_i_style.required_prefix = I
+dotnet_naming_style.abstract_prefix_a_style.capitalization = pascal_case
+dotnet_naming_style.abstract_prefix_a_style.required_prefix = A
+dotnet_naming_style.parameter_prefix_p_style.capitalization = pascal_case
+dotnet_naming_style.parameter_prefix_p_style.required_prefix = p
+
+# Define naming symbols
+dotnet_naming_symbols.class_names.applicable_kinds = class
+dotnet_naming_symbols.method_names.applicable_kinds = method
+dotnet_naming_symbols.private_method_names.applicable_kinds = method
+dotnet_naming_symbols.private_method_names.applicable_accessibilities = private
+dotnet_naming_symbols.constants.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.constants.applicable_kinds = unset
+dotnet_naming_symbols.local_variables.applicable_kinds = local
+dotnet_naming_symbols.public_fields.applicable_kinds = field
+dotnet_naming_symbols.public_fields.applicable_accessibilities = public
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private, protected, internal, protected_internal
+dotnet_naming_symbols.function_parameters.applicable_kinds = parameter
+dotnet_naming_symbols.interface_names.applicable_kinds = interface
+dotnet_naming_symbols.abstract_class_names.applicable_kinds = class
+dotnet_naming_symbols.abstract_class_names.required_modifiers = abstract
+
+# Define naming rules
+dotnet_naming_rule.class_names_should_be_pascal_case.severity = warning
+dotnet_naming_rule.class_names_should_be_pascal_case.symbols = class_names
+dotnet_naming_rule.class_names_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_rule.method_names_should_be_pascal_case.severity = warning
+dotnet_naming_rule.method_names_should_be_pascal_case.symbols = method_names
+dotnet_naming_rule.method_names_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_rule.private_method_names_should_be_pascal_case.severity = warning
+dotnet_naming_rule.private_method_names_should_be_pascal_case.symbols = private_method_names
+dotnet_naming_rule.private_method_names_should_be_pascal_case.style = pascal_case_underscore_style
+
+# dotnet_naming_rule.constants_should_be_upper_case.severity = warning
+# dotnet_naming_rule.constants_should_be_upper_case.symbols = constants
+# dotnet_naming_rule.constants_should_be_upper_case.style = all_upper_case_style
+
+dotnet_naming_rule.local_variables_should_be_camel_case.severity = warning
+dotnet_naming_rule.local_variables_should_be_camel_case.symbols = local_variables
+dotnet_naming_rule.local_variables_should_be_camel_case.style = camel_case_style
+
+dotnet_naming_rule.public_fields_should_be_pascal_case.severity = warning
+dotnet_naming_rule.public_fields_should_be_pascal_case.symbols = public_fields
+dotnet_naming_rule.public_fields_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_rule.private_fields_should_be_pascal_case.severity = warning
+dotnet_naming_rule.private_fields_should_be_pascal_case.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_pascal_case.style = pascal_case_underscore_style
+
+dotnet_naming_rule.function_parameters_should_be_camel_case.severity = warning
+dotnet_naming_rule.function_parameters_should_be_camel_case.symbols = function_parameters
+dotnet_naming_rule.function_parameters_should_be_camel_case.style = parameter_prefix_p_style
+
+dotnet_naming_rule.interface_names_should_be_prefix_i.severity = warning
+dotnet_naming_rule.interface_names_should_be_prefix_i.symbols = interface_names
+dotnet_naming_rule.interface_names_should_be_prefix_i.style = interface_prefix_i_style
+
+dotnet_naming_rule.abstract_class_names_should_be_prefix_abstract.severity = warning
+dotnet_naming_rule.abstract_class_names_should_be_prefix_abstract.symbols = abstract_class_names
+dotnet_naming_rule.abstract_class_names_should_be_prefix_abstract.style = abstract_prefix_a_style
+
+[*.cs]
+resharper_redundant_lambda_parameter_type_highlighting = none
