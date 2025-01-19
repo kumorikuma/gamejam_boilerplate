@@ -1,7 +1,12 @@
+#nullable enable
+
 using System;
+using Kumorikuma;
 using UnityEngine;
 
-public class GameLifecycleManager : Singleton<GameLifecycleManager> {
+public class LifecycleManager : MonoBehaviour {
+    private PlayerInputManager _PlayerInputManager;
+    
     public enum GameState {
         MainMenu,
         GameStarted,
@@ -9,19 +14,23 @@ public class GameLifecycleManager : Singleton<GameLifecycleManager> {
         GameOver,
     }
 
-    public event EventHandler<GameState> OnGameStateUpdated;
-    private GameState _currentGameState = GameState.MainMenu;
+    public event Action<GameState>? OnGameStateUpdated;
+    private GameState _CurrentGameState = GameState.MainMenu;
 
     public GameState CurrentGameState {
-        get { return _currentGameState; }
+        get { return _CurrentGameState; }
+    }
+
+    void Awake() {
+        _PlayerInputManager = Main.Instance.PlayerInputManager;
     }
 
     void Start() {
-        SwitchGameState(_currentGameState);
+        _SwitchGameState(_CurrentGameState);
     }
 
-    private void SwitchGameState(GameState gameState) {
-        switch (gameState) {
+    private void _SwitchGameState(GameState pGameState) {
+        switch (pGameState) {
             case GameState.MainMenu:
                 UIRouter.Instance.SwitchRoutes(UIRouter.Route.None);
                 break;
@@ -29,27 +38,27 @@ public class GameLifecycleManager : Singleton<GameLifecycleManager> {
                 UIRouter.Instance.SwitchRoutes(UIRouter.Route.Hud);
                 // Unpause the game
                 Time.timeScale = 1;
-                PlayerManager.Instance.SwitchActionMaps("gameplay");
-                ToggleCursor(false);
+                _PlayerInputManager.SwitchToGameplayActions();
+                _EnableCursor(false);
                 break;
             case GameState.GamePaused:
                 UIRouter.Instance.SwitchRoutes(UIRouter.Route.PauseMenu);
                 // Pause the Game
                 Time.timeScale = 0;
-                PlayerManager.Instance.SwitchActionMaps("menu");
-                ToggleCursor(true);
+                _PlayerInputManager.SwitchToMenuActions();
+                _EnableCursor(true);
                 break;
             case GameState.GameOver:
                 UIRouter.Instance.SwitchRoutes(UIRouter.Route.GameOver);
                 break;
         }
 
-        _currentGameState = gameState;
-        OnGameStateUpdated?.Invoke(this, _currentGameState);
+        _CurrentGameState = pGameState;
+        OnGameStateUpdated?.Invoke(_CurrentGameState);
     }
 
-    private void ToggleCursor(bool enableCursor) {
-        if (enableCursor) {
+    private void _EnableCursor(bool pEnableCursor) {
+        if (pEnableCursor) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         } else {
@@ -59,22 +68,22 @@ public class GameLifecycleManager : Singleton<GameLifecycleManager> {
     }
 
     public void StartGame() {
-        SwitchGameState(GameState.GameStarted);
+        _SwitchGameState(GameState.GameStarted);
     }
 
     public void EndGame() {
-        SwitchGameState(GameState.GameOver);
+        _SwitchGameState(GameState.GameOver);
     }
 
     public void PauseGame() {
-        SwitchGameState(GameState.GamePaused);
+        _SwitchGameState(GameState.GamePaused);
     }
 
     public void UnpauseGame() {
-        SwitchGameState(GameState.GameStarted);
+        _SwitchGameState(GameState.GameStarted);
     }
 
     public void ReturnToMainMenu() {
-        SwitchGameState(GameState.MainMenu);
+        _SwitchGameState(GameState.MainMenu);
     }
 }

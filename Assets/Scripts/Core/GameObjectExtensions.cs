@@ -1,28 +1,48 @@
+#nullable enable
+
 using System;
 using UnityEngine;
 
 public static class GameObjectExtensions {
-    public static void DestroyChildren(this GameObject obj) {
-        foreach (Transform child in obj.transform) {
+    public static T GetComponent_ThrowIfNull<T>(this GameObject pGameObject) {
+        T? component = pGameObject.GetComponent<T>();
+        if (component == null) {
+            throw new Exception($"Could not GetComponent on GameObject [{pGameObject.name}]. Component was null!");
+        }
+
+        return component;
+    }
+    
+    public static T GetComponentInChildren_ThrowIfNull<T>(this GameObject pGameObject, bool pIncludeInactive = false) {
+        T? component = pGameObject.GetComponentInChildren<T>(pIncludeInactive);
+        if (component == null) {
+            throw new Exception($"Could not GetComponent on GameObject [{pGameObject.name}]. Component was null!");
+        }
+
+        return component;
+    }
+    
+    public static void DestroyChildren(this GameObject pGameObject) {
+        foreach (Transform child in pGameObject.transform) {
             UnityEngine.Object.Destroy(child.gameObject);
         }
     }
 
-    public static void DestroyChildrenImmediate(this GameObject obj) {
-        foreach (Transform child in obj.transform) {
+    public static void DestroyChildrenImmediate(this GameObject pGameObject) {
+        foreach (Transform child in pGameObject.transform) {
             UnityEngine.Object.DestroyImmediate(child.gameObject);
         }
     }
 
-    public static GameObject FindChildByName(this GameObject parent, string name) {
+    public static GameObject? FindChildByName(this GameObject pParent, string pName) {
         // Check if the current GameObject has the target name
-        if (parent.name == name) {
-            return parent;
+        if (pParent.name == pName) {
+            return pParent;
         }
 
         // Iterate through each child and perform a recursive search
-        foreach (Transform child in parent.transform) {
-            GameObject result = child.gameObject.FindChildByName(name);
+        foreach (Transform child in pParent.transform) {
+            GameObject result = child.gameObject.FindChildByName(pName);
             if (result != null) {
                 return result;
             }

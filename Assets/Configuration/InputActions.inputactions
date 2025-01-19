@@ -211,7 +211,7 @@
             "id": "dfad8f95-396f-4bff-a30f-759ab6866f9c",
             "actions": [
                 {
-                    "name": "MenuMove",
+                    "name": "Move",
                     "type": "Value",
                     "id": "c91a3685-d2e9-4618-b5c4-71c5d225433a",
                     "expectedControlType": "Stick",
@@ -220,10 +220,10 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Unpause",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "4b884d20-38eb-40fe-a35d-141221f5cd66",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -237,7 +237,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Unpause",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -248,7 +248,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Unpause",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -259,7 +259,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -270,7 +270,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -281,7 +281,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -292,7 +292,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -303,7 +303,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -314,7 +314,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -325,7 +325,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -336,7 +336,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -347,7 +347,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -358,7 +358,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -369,7 +369,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

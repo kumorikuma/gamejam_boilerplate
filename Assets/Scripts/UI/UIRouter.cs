@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class UIRouter : Singleton<UIRouter> {
+public class UIRouter : MonoBehaviourSingleton<UIRouter> {
     public enum Route {
         None,
         MainMenu,

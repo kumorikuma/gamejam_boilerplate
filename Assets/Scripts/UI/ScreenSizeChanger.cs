@@ -9,7 +9,7 @@ using UnityEngine.UI;
 // vertical aspect ratio, we actually want the behavior to be the opposite. "Fit to Width" instead of "Fit to Height".
 // This thing just updates the orthographic size to be larger or smaller, while maintaining the same width.
 [ExecuteInEditMode]
-public class ScreenSizeChanger : Singleton<ScreenSizeChanger> {
+public class ScreenSizeChanger : MonoBehaviourSingleton<ScreenSizeChanger> {
     public event EventHandler<float> OnSafeAreaYChanged;
     public event EventHandler<float> OnGameHeightChanged;
 

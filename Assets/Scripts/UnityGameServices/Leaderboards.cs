@@ -9,9 +9,9 @@ using Unity.Services.Leaderboards.Exceptions;
 
 // Handles both keeping track of highest local score (for offline situations),
 // and also using online Unity leaderboards.
-public class Leaderboards : Singleton<Leaderboards> {
+public class Leaderboards : MonoBehaviourSingleton<Leaderboards> {
     private const string LEADERBOARD_ID = "Global";
-    public const string PREFS_BEST_SCORE = "Best_Score";
+    private const string PREFS_BEST_SCORE = "Best_Score";
 
     public struct LeaderboardScores {
         public int LatestScore;

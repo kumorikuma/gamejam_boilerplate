@@ -1,54 +1,59 @@
+using Kumorikuma;
 using ReactUnity;
 using ReactUnity.Reactive;
 using UnityEngine;
 
 public class ReactUnityBridge : MonoBehaviour {
-    public ReactiveValue<string> route = new();
-    public ReactiveValue<bool> debugModeEnabled = new();
-    public ReactiveValue<string> debugGameState = new();
-    public ReactiveValue<Leaderboards.LeaderboardScores> leaderboardScores = new();
+    private ReactiveValue<string> _UiRoute;
+    private ReactiveValue<bool> _DebugModeEnabled;
+    private ReactiveValue<string> _DebugGameState;
+    private ReactiveValue<Leaderboards.LeaderboardScores> _LeaderboardScores;
 
     private ReactRendererBase reactRenderer;
 
     void Awake() {
         reactRenderer = GetComponentInChildren<ReactUnity.UGUI.ReactRendererUGUI>();
 
-        // Routing
-        reactRenderer.Globals["route"] = route;
+        _UiRoute = new ReactiveValue<string>();
+        _DebugModeEnabled = new ReactiveValue<bool>();
+        _DebugGameState = new ReactiveValue<string>();
+        _LeaderboardScores = new ReactiveValue<Leaderboards.LeaderboardScores>();
 
-        reactRenderer.Globals["leaderboardScores"] = leaderboardScores;
+        // Routing
+        reactRenderer.Globals["route"] = _UiRoute;
+        reactRenderer.Globals["leaderboardScores"] = _LeaderboardScores;
 
         // Debug values
-        reactRenderer.Globals["debugGameState"] = debugGameState;
-        reactRenderer.Globals["debugModeEnabled"] = debugModeEnabled;
+        reactRenderer.Globals["debugGameState"] = _DebugGameState;
+        reactRenderer.Globals["debugModeEnabled"] = _DebugModeEnabled;
 
         // Enable Debug Mode when in Unity Editor
-        debugModeEnabled.Value = false;
+        _DebugModeEnabled.Value = false;
 #if UNITY_EDITOR
-        debugModeEnabled.Value = true;
+        _DebugModeEnabled.Value = true;
 #endif
 
         // Singletons become available after Awake. ScriptExecutionOrder should make sure this is executed last.
-        UIRouter.Instance.OnRouteUpdate += OnRouteUpdate;
-        GameLifecycleManager.Instance.OnGameStateUpdated += OnGameStateUpdated;
+        UIRouter.Instance.OnRouteUpdate += _OnRouteUpdate;
+        Main.Instance.LifecycleManager.OnGameStateUpdated += _OnGameStateUpdated;
         if (Leaderboards.Instance != null) {
-            Leaderboards.Instance.OnLeaderboardScoresUpdated += LeaderboardsOnOnLeaderboardScoresUpdated;
+            Leaderboards.Instance.OnLeaderboardScoresUpdated += _OnLeaderboardScoresUpdated;
             // To enable leaderboards, need to connect to a Unity Project and add the Leaderboards singleton to the game.
         }
 
         // Game System References   
-        reactRenderer.Globals["gameLifecycleManager"] = GameLifecycleManager.Instance;
+        reactRenderer.Globals["gameLifecycleManager"] = Main.Instance.LifecycleManager;
     }
 
-    private void LeaderboardsOnOnLeaderboardScoresUpdated(object sender, Leaderboards.LeaderboardScores data) {
-        leaderboardScores.Value = data;
+    private void _OnLeaderboardScoresUpdated(object _, Leaderboards.LeaderboardScores pLeaderboardScores) {
+        _LeaderboardScores.Value = pLeaderboardScores;
     }
 
-    void OnRouteUpdate(object sender, string data) {
-        route.Value = data;
+    private void _OnRouteUpdate(object _, string pUiRoute) {
+        _UiRoute.Value = pUiRoute;
     }
 
-    void OnGameStateUpdated(object sender, GameLifecycleManager.GameState data) {
-        debugGameState.Value = data.ToString();
+    private void _OnGameStateUpdated(LifecycleManager.GameState pGameState) {
+        _DebugGameState.Value = pGameState.ToString();
     }
 }
