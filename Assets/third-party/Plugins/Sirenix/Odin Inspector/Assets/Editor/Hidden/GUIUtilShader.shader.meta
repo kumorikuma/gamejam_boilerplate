@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: 08379ccefc05200459f90a1c0711a340
-NativeFormatImporter:
+guid: 7619c1ca61a5ef94ca78ddfa69941dad
+ShaderImporter:
   externalObjects: {}
-  mainObjectFileID: 0
+  defaultTextures: []
+  nonModifiableTextures: []
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -11,5 +12,5 @@ AssetOrigin:
   productId: 89041
   packageName: Odin Inspector and Serializer
   packageVersion: 3.3.1.11
-  assetPath: Assets/third-party/Plugins/Sirenix/Odin Inspector/Assets/Editor/OdinPathLookup.asset
+  assetPath: Assets/third-party/Plugins/Sirenix/Odin Inspector/Assets/Editor/Hidden/GUIUtilShader.shader
   uploadId: 712389

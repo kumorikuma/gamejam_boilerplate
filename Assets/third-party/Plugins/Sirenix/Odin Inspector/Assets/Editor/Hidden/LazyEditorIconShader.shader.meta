@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: 08379ccefc05200459f90a1c0711a340
-NativeFormatImporter:
+guid: 2ad0a53eacb91bd4fbe0dc668bf25e6f
+ShaderImporter:
   externalObjects: {}
-  mainObjectFileID: 0
+  defaultTextures: []
+  nonModifiableTextures: []
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -11,5 +12,5 @@ AssetOrigin:
   productId: 89041
   packageName: Odin Inspector and Serializer
   packageVersion: 3.3.1.11
-  assetPath: Assets/third-party/Plugins/Sirenix/Odin Inspector/Assets/Editor/OdinPathLookup.asset
+  assetPath: Assets/third-party/Plugins/Sirenix/Odin Inspector/Assets/Editor/Hidden/LazyEditorIconShader.shader
   uploadId: 712389
